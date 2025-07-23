@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstdlib>
 #include <thread>  
@@ -11,7 +10,7 @@
 
 using namespace std;
 
-
+// Global variables for Mode 3 (Custom Mode)
 const int MAX_SIZE_mode3 = 1000;
 int foodX_mode3 = -1, foodY_mode3 = -1;
 vector<pair<int, int>> barriers_mode3;
@@ -20,7 +19,6 @@ void myRectspecific(int x1, int y1, int x2, int y2, int R, int G, int B)
 {
     HWND console_handle = GetConsoleWindow();
     HDC device_context = GetDC(console_handle);
-
 
     HPEN pen = CreatePen(PS_SOLID, 2, RGB(0, 255, 0));
     SelectObject(device_context, pen);
@@ -32,14 +30,13 @@ void myRectspecific(int x1, int y1, int x2, int y2, int R, int G, int B)
     DeleteObject(pen);
     DeleteObject(brush);
 }
+
 void spawnFood_mode3() {
     bool validPosition_mode3 = false;
 
     while (!validPosition_mode3) {
-
         foodX_mode3 = 410 + rand() % (750 - 405 - 10);
         foodY_mode3 = 130 + rand() % (360 - 125 - 10);
-
 
         bool overlapsBarrier_mode3 = false;
         for (size_t i = 0; i < barriers_mode3.size(); i += 2) {
@@ -51,7 +48,6 @@ void spawnFood_mode3() {
             double dx_mode3 = bx2_mode3 - bx1_mode3;
             double dy_mode3 = by2_mode3 - by1_mode3;
 
-
             if (dx_mode3 == 0 && dy_mode3 == 0) {
                 if (abs(foodX_mode3 - bx1_mode3) <= 10 && abs(foodY_mode3 - by1_mode3) <= 10) {
                     overlapsBarrier_mode3 = true;
@@ -60,14 +56,11 @@ void spawnFood_mode3() {
                 continue;
             }
 
-
             double t_mode3 = ((foodX_mode3 - bx1_mode3) * dx_mode3 + (foodY_mode3 - by1_mode3) * dy_mode3) / (dx_mode3 * dx_mode3 + dy_mode3 * dy_mode3);
             t_mode3 = max(0.0, min(1.0, t_mode3));
 
-
             double closestX_mode3 = bx1_mode3 + t_mode3 * dx_mode3;
             double closestY_mode3 = by1_mode3 + t_mode3 * dy_mode3;
-
 
             double distance_mode3 = sqrt(pow(foodX_mode3 - closestX_mode3, 2) + pow(foodY_mode3 - closestY_mode3, 2));
 
@@ -76,7 +69,6 @@ void spawnFood_mode3() {
                 break;
             }
         }
-
 
         if (!overlapsBarrier_mode3) {
             validPosition_mode3 = true;
@@ -102,7 +94,6 @@ void updateSnake_mode3(int& x_mode3, int& y_mode3, int W_mode3) {
         snakeBody_mode3[i][0] = snakeBody_mode3[i - 1][0];
         snakeBody_mode3[i][1] = snakeBody_mode3[i - 1][1];
     }
-
 
     if (W_mode3 == 1)
         snakeBody_mode3[0][0] -= 5;
@@ -153,7 +144,6 @@ void customSpawnBarrier_mode3() {
             cout << "Enter barrier " << i + 1 << " end y2 (120 to 360): ";
             cin >> y2_mode3;
 
-
             if (x1_mode3 >= rectLeft_mode3 && x1_mode3 <= rectRight_mode3 && y1_mode3 >= rectTop_mode3 && y1_mode3 <= rectBottom_mode3 &&
                 x2_mode3 >= rectLeft_mode3 && x2_mode3 <= rectRight_mode3 && y2_mode3 >= rectTop_mode3 && y2_mode3 <= rectBottom_mode3) {
                 barriers_mode3.push_back({ x1_mode3, y1_mode3 });
@@ -185,10 +175,8 @@ bool checkBarrierCollision_mode3(int x_mode3, int y_mode3) {
         int x2_mode3 = barriers_mode3[i + 1].first;
         int y2_mode3 = barriers_mode3[i + 1].second;
 
-
         double dx_mode3 = x2_mode3 - x1_mode3;
         double dy_mode3 = y2_mode3 - y1_mode3;
-
 
         if (dx_mode3 == 0 && dy_mode3 == 0) {
             if (abs(x_mode3 - x1_mode3) <= 5 && abs(y_mode3 - y1_mode3) <= 5) {
@@ -197,17 +185,13 @@ bool checkBarrierCollision_mode3(int x_mode3, int y_mode3) {
             continue;
         }
 
-
         double t_mode3 = ((x_mode3 - x1_mode3) * dx_mode3 + (y_mode3 - y1_mode3) * dy_mode3) / (dx_mode3 * dx_mode3 + dy_mode3 * dy_mode3);
         t_mode3 = max(0.0, min(1.0, t_mode3));
-
 
         double closestX_mode3 = x1_mode3 + t_mode3 * dx_mode3;
         double closestY_mode3 = y1_mode3 + t_mode3 * dy_mode3;
 
-
         double distance_mode3 = sqrt(pow(x_mode3 - closestX_mode3, 2) + pow(y_mode3 - closestY_mode3, 2));
-
 
         if (distance_mode3 <= 5) {
             return true;
@@ -216,13 +200,7 @@ bool checkBarrierCollision_mode3(int x_mode3, int y_mode3) {
     return false;
 }
 
-
-
-
-
-
-
-
+// Global variables for Mode 2 Level Infinite
 const int MAX_SIZE_mode2levelInfinite = 1000;
 const int GRID_SIZE_mode2levelInfinite = 10;
 int highScore_mode2levelInfinite = 0;
@@ -244,10 +222,8 @@ void spawnFood_mode2levelInfinite() {
     int playingAreaBottom = 735;
 
     while (!validPosition_mode2levelInfinite) {
-
         foodX_mode2levelInfinite = playingAreaLeft + (rand() % ((playingAreaRight - playingAreaLeft) / GRID_SIZE_mode2levelInfinite)) * GRID_SIZE_mode2levelInfinite;
         foodY_mode2levelInfinite = playingAreaTop + (rand() % ((playingAreaBottom - playingAreaTop) / GRID_SIZE_mode2levelInfinite)) * GRID_SIZE_mode2levelInfinite;
-
 
         bool overlapsBarrier_mode2levelInfinite = false;
         for (const auto& barrier_mode2levelInfinite : barriers_mode2levelInfinite) {
@@ -265,20 +241,18 @@ void spawnFood_mode2levelInfinite() {
             }
         }
 
-
         if (!overlapsBarrier_mode2levelInfinite) {
             validPosition_mode2levelInfinite = true;
         }
     }
 }
-bool checkWallCollision_mode2levelInfinite(int x_mode2levelInfinite, int y_mode2levelInfinite) {
 
+bool checkWallCollision_mode2levelInfinite(int x_mode2levelInfinite, int y_mode2levelInfinite) {
     int rect1_left_mode2levelInfinite = 400;
     int rect1_top_mode2levelInfinite = 120;
     int rect1_right_mode2levelInfinite = 1290;
     int rect1_bottom_mode2levelInfinite = 735;
     int snakeThickness_mode2levelInfinite = 7;
-
 
     if (x_mode2levelInfinite < rect1_left_mode2levelInfinite ||
         x_mode2levelInfinite + snakeThickness_mode2levelInfinite > rect1_right_mode2levelInfinite ||
@@ -302,7 +276,6 @@ void updateSnake_mode2levelInfinite(int& x_mode2levelInfinite, int& y_mode2level
         snakeBody_mode2levelInfinite[i][0] = snakeBody_mode2levelInfinite[i - 1][0];
         snakeBody_mode2levelInfinite[i][1] = snakeBody_mode2levelInfinite[i - 1][1];
     }
-
 
     if (W_mode2levelInfinite == 1)
         snakeBody_mode2levelInfinite[0][0] -= 5;
@@ -341,7 +314,6 @@ void spawnBarrier_mode2levelInfinite() {
 
     int attempts_mode2levelInfinite = 0;
 
-
     int playingAreaLeft = 400;
     int playingAreaTop = 120;
     int playingAreaRight = 1290;
@@ -351,20 +323,17 @@ void spawnBarrier_mode2levelInfinite() {
         attempts_mode2levelInfinite++;
 
         if (rand() % 2 == 0) {
-
             x1_mode2levelInfinite = playingAreaLeft + rand() % (playingAreaRight - playingAreaLeft - 20);
             y1_mode2levelInfinite = playingAreaTop + gapSize_mode2levelInfinite;
             x2_mode2levelInfinite = x1_mode2levelInfinite;
             y2_mode2levelInfinite = playingAreaBottom - gapSize_mode2levelInfinite;
         }
         else {
-
             x1_mode2levelInfinite = playingAreaLeft + gapSize_mode2levelInfinite;
             y1_mode2levelInfinite = playingAreaTop + rand() % (playingAreaBottom - playingAreaTop - 20);
             x2_mode2levelInfinite = playingAreaRight - gapSize_mode2levelInfinite;
             y2_mode2levelInfinite = y1_mode2levelInfinite;
         }
-
 
         validPosition_mode2levelInfinite = true;
         for (int i = 0; i < snakeLength_mode2levelInfinite; i++) {
@@ -375,14 +344,12 @@ void spawnBarrier_mode2levelInfinite() {
             }
         }
 
-
         for (const auto& barrier_mode2levelInfinite : barriers_mode2levelInfinite) {
             if (abs(barrier_mode2levelInfinite.first - x1_mode2levelInfinite) < 30 && abs(barrier_mode2levelInfinite.second - y1_mode2levelInfinite) < 30) {
                 validPosition_mode2levelInfinite = false;
                 break;
             }
         }
-
 
         bool sufficientDistance_mode2levelInfinite = true;
         for (size_t i = 0; i < barriers_mode2levelInfinite.size(); i += 2) {
@@ -404,7 +371,6 @@ void spawnBarrier_mode2levelInfinite() {
         }
 
         if (validPosition_mode2levelInfinite && sufficientDistance_mode2levelInfinite) {
-
             barriers_mode2levelInfinite.push_back({ x1_mode2levelInfinite, y1_mode2levelInfinite });
             barriers_mode2levelInfinite.push_back({ x2_mode2levelInfinite, y2_mode2levelInfinite });
         }
@@ -433,13 +399,11 @@ bool checkBarrierCollision_mode2levelInfinite(int x_mode2levelInfinite, int y_mo
         int x2_mode2levelInfinite = barriers_mode2levelInfinite[i + 1].first;
         int y2_mode2levelInfinite = barriers_mode2levelInfinite[i + 1].second;
 
-
         if (x1_mode2levelInfinite == x2_mode2levelInfinite) {
             if (x_mode2levelInfinite >= x1_mode2levelInfinite - 3 && x_mode2levelInfinite <= x1_mode2levelInfinite + 3 && y_mode2levelInfinite >= y1_mode2levelInfinite && y_mode2levelInfinite <= y2_mode2levelInfinite) {
                 return true;
             }
         }
-
         else if (y1_mode2levelInfinite == y2_mode2levelInfinite) {
             if (y_mode2levelInfinite >= y1_mode2levelInfinite - 3 && y_mode2levelInfinite <= y1_mode2levelInfinite + 3 && x_mode2levelInfinite >= x1_mode2levelInfinite && x_mode2levelInfinite <= x2_mode2levelInfinite) {
                 return true;
@@ -448,32 +412,16 @@ bool checkBarrierCollision_mode2levelInfinite(int x_mode2levelInfinite, int y_mo
     }
     return false;
 }
+
 void levelUp_mode2levelInfinite() {
     level_mode2levelInfinite++;
-
     spawnBarrier_mode2levelInfinite();
-
     cout << "\nLevel " << level_mode2levelInfinite << "!" << endl;
-
     gamePaused_mode2levelInfinite = true;
-
     Sleep(500);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Global variables for Mode 2 Level 3
 const int GRID_SIZE_mode2level3 = 10;
 int foodX_mode2level3 = -1, foodY_mode2level3 = -1;
 vector<pair<int, int>> barriers_mode2level3;
@@ -488,10 +436,8 @@ void spawnFood_mode2level3() {
     int bufferzone_mode2level3 = 70;
 
     while (!validPosition_mode2level3) {
-
         foodX_mode2level3 = 410 + (rand() % ((750 - 410 - 10) / GRID_SIZE_mode2level3)) * GRID_SIZE_mode2level3;
         foodY_mode2level3 = 125 + (rand() % ((360 - 125 - 10) / GRID_SIZE_mode2level3)) * GRID_SIZE_mode2level3;
-
 
         bool overlapsBarrier_mode2level3 = false;
         for (const auto& barrier_mode2level3 : barriers_mode2level3) {
@@ -499,14 +445,12 @@ void spawnFood_mode2level3() {
             int by_mode2level3 = barrier_mode2level3.second;
             int barrierThickness_mode2level3 = 30;
 
-
             if (foodX_mode2level3 >= bx_mode2level3 - bufferzone_mode2level3 && foodX_mode2level3 <= bx_mode2level3 + barrierThickness_mode2level3 + bufferzone_mode2level3 &&
                 foodY_mode2level3 >= by_mode2level3 && foodY_mode2level3 <= by_mode2level3 + barrierThickness_mode2level3) {
                 overlapsBarrier_mode2level3 = true;
                 break;
             }
         }
-
 
         if (!overlapsBarrier_mode2level3) {
             validPosition_mode2level3 = true;
@@ -532,7 +476,6 @@ void updateSnake_mode2level3(int& x_mode2level3, int& y_mode2level3, int W_mode2
         snakeBody_mode2level3[i][0] = snakeBody_mode2level3[i - 1][0];
         snakeBody_mode2level3[i][1] = snakeBody_mode2level3[i - 1][1];
     }
-
 
     if (W_mode2level3 == 1)
         snakeBody_mode2level3[0][0] -= 5;
@@ -563,11 +506,9 @@ bool checkSelfCollision_mode2level3() {
 }
 
 void spawnFixedBarriers_mode2level3() {
-
     int barrierHeight_mode2level3 = 170;
     int leftMargin_mode2level3 = 470;
     int spacing_mode2level3 = 40;
-
 
     barriers_mode2level3.push_back({ leftMargin_mode2level3, 160 });
     barriers_mode2level3.push_back({ leftMargin_mode2level3, 160 + barrierHeight_mode2level3 });
@@ -581,10 +522,8 @@ void spawnFixedBarriers_mode2level3() {
     barriers_mode2level3.push_back({ leftMargin_mode2level3 + 3 * (spacing_mode2level3 + 30), 160 });
     barriers_mode2level3.push_back({ leftMargin_mode2level3 + 3 * (spacing_mode2level3 + 30), 160 + barrierHeight_mode2level3 });
 
-
     barriers_mode2level3.push_back({ 470, 240 });
     barriers_mode2level3.push_back({ 680, 240 });
-
 }
 
 void renderBarriers_mode2level3() {
@@ -598,9 +537,6 @@ void renderBarriers_mode2level3() {
     }
 }
 
-
-
-
 bool checkBarrierCollision_mode2level3(int x_mode2level3, int y_mode2level3) {
     for (size_t i = 0; i < barriers_mode2level3.size(); i += 2) {
         int x1_mode2level3 = barriers_mode2level3[i].first;
@@ -608,13 +544,11 @@ bool checkBarrierCollision_mode2level3(int x_mode2level3, int y_mode2level3) {
         int x2_mode2level3 = barriers_mode2level3[i + 1].first;
         int y2_mode2level3 = barriers_mode2level3[i + 1].second;
 
-
         if (x1_mode2level3 == x2_mode2level3) {
             if (x_mode2level3 == x1_mode2level3 && y_mode2level3 >= min(y1_mode2level3, y2_mode2level3) && y_mode2level3 <= max(y1_mode2level3, y2_mode2level3)) {
                 return true;
             }
         }
-
         else if (y1_mode2level3 == y2_mode2level3) {
             if (abs(y_mode2level3 - y1_mode2level3) <= 3 &&
                 x_mode2level3 >= min(x1_mode2level3, x2_mode2level3) &&
@@ -626,20 +560,7 @@ bool checkBarrierCollision_mode2level3(int x_mode2level3, int y_mode2level3) {
     return false;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Global variables for Mode 1 (Endless Mode)
 const int MAX_SIZE_mode1 = 1000;
 int foodX_mode1 = -1, foodY_mode1 = -1;
 const int LEFT_BOUND_mode1 = 395;
@@ -667,16 +588,10 @@ int snakeBody_mode1[MAX_SNAKE_SIZE_mode1][2] = { 0 };
 int snakeLength_mode1 = 1;
 
 void updateSnakemode1(int& x_mode1, int& y_mode1, int W_mode1) {
-
-    int prevX_mode1 = snakeBody_mode1[0][0];
-    int prevY_mode1 = snakeBody_mode1[0][1];
-
-
     for (int i = snakeLength_mode1 - 1; i > 0; --i) {
         snakeBody_mode1[i][0] = snakeBody_mode1[i - 1][0];
         snakeBody_mode1[i][1] = snakeBody_mode1[i - 1][1];
     }
-
 
     if (W_mode1 == 1)
         snakeBody_mode1[0][0] -= 5;
@@ -687,33 +602,26 @@ void updateSnakemode1(int& x_mode1, int& y_mode1, int W_mode1) {
     else if (W_mode1 == 4)
         snakeBody_mode1[0][1] += 5;
 
-
     int newX_mode1 = snakeBody_mode1[0][0];
     int newY_mode1 = snakeBody_mode1[0][1];
 
-
+    // Wall wrapping logic
     if (newX_mode1 < LEFT_BOUND_mode1) {
-        myRect(RIGHT_BOUND_mode1 - 7, prevY_mode1, RIGHT_BOUND_mode1, prevY_mode1 + 7, 0, 0, 0);
         newX_mode1 = RIGHT_BOUND_mode1 - 7;
     }
     else if (newX_mode1 > RIGHT_BOUND_mode1 - 7) {
-        myRect(LEFT_BOUND_mode1, prevY_mode1, LEFT_BOUND_mode1 + 7, prevY_mode1 + 7, 0, 0, 0);
         newX_mode1 = LEFT_BOUND_mode1;
     }
 
     if (newY_mode1 < TOP_BOUND_mode1) {
-        myRect(prevX_mode1, BOTTOM_BOUND_mode1 - 7, prevX_mode1 + 7, BOTTOM_BOUND_mode1, 0, 0, 0);
         newY_mode1 = BOTTOM_BOUND_mode1 - 7;
     }
     else if (newY_mode1 > BOTTOM_BOUND_mode1 - 7) {
-        myRect(prevX_mode1, TOP_BOUND_mode1, prevX_mode1 + 7, TOP_BOUND_mode1 + 7, 0, 0, 0);
-        newY_mode1 = TOP_BOUND_mode1 + 7;
+        newY_mode1 = TOP_BOUND_mode1;
     }
-
 
     snakeBody_mode1[0][0] = newX_mode1;
     snakeBody_mode1[0][1] = newY_mode1;
-
 
     x_mode1 = snakeBody_mode1[0][0];
     y_mode1 = snakeBody_mode1[0][1];
@@ -734,24 +642,10 @@ bool checkSelfCollisionmode1() {
     return false;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Utility functions
 void clearConsole() {
     system("cls");
 }
-
 
 void drawBackground() {
     int R = 197, G = 154, B = 3;
@@ -763,24 +657,19 @@ void drawBackground2() {
     myRect(320, 0 + 80, 620, 600 + 80, R, G, B);
 }
 
-
 void drawSnake(int colorIndex, int startX, int startY) {
     const int blockSize = 30;
     const int numberOfBlocks = 5;
-
 
     const char* colorNames[] = {
         "Red", "Blue", "Yellow", "Orange", "Purple", "Pink"
     };
 
-
     gotoxy(4, 12);
     cout << " ";
 
-
     gotoxy(12, 12);
     cout << colorNames[colorIndex];
-
 
     int colors[][3] = {
         {255, 0, 0},
@@ -791,7 +680,6 @@ void drawSnake(int colorIndex, int startX, int startY) {
         {255, 192, 203}
     };
 
-
     for (int i = 0; i < numberOfBlocks; i++) {
         int R = colors[colorIndex][0];
         int G = colors[colorIndex][1];
@@ -800,11 +688,8 @@ void drawSnake(int colorIndex, int startX, int startY) {
     }
 }
 
-
 void displayMenu() {
-
     myRectspecific(3, 150, 300, 400, 0, 0, 0);
-
 
     gotoxy(5, 11);
     cout << " SNAKE GAME " << endl;
@@ -813,15 +698,12 @@ void displayMenu() {
 }
 
 void displayLevels(int levelIndex) {
-
     gotoxy(3, 10);
     cout << " LEVEL SELECT: ";
-
 
     const char* levels[] = {
         "Level 1", "Level 2", "Level 3", "Infinite"
     };
-
 
     for (int i = 0; i < 4; i++) {
         gotoxy(10, 12 + i);
@@ -834,17 +716,13 @@ void displayLevels(int levelIndex) {
     }
 }
 
-
 void displayModes(int modeIndex) {
-
     gotoxy(3, 10);
     cout << " MODE SELECT ";
-
 
     const char* modes[] = {
         "Endless Mode", "Levels Mode", "Custom Mode"
     };
-
 
     for (int i = 0; i < 3; i++) {
         gotoxy(8, 12 + i);
@@ -856,6 +734,8 @@ void displayModes(int modeIndex) {
         }
     }
 }
+
+// Global variables for Mode 2 Level 1
 const int GRID_SIZE_mode2level1 = 10;
 int foodX_mode2level1 = -1, foodY_mode2level1 = -1;
 vector<pair<int, int>> barriers_mode2level1;
@@ -870,11 +750,8 @@ void spawnFood_mode2level1() {
     int bufferzone_mode2level1 = 70;
 
     while (!validPosition_mode2level1) {
-
         foodX_mode2level1 = 410 + (rand() % ((750 - 410 - 10) / GRID_SIZE_mode2level1)) * GRID_SIZE_mode2level1;
         foodY_mode2level1 = 125 + (rand() % ((360 - 125 - 10) / GRID_SIZE_mode2level1)) * GRID_SIZE_mode2level1;
-
-
 
         bool overlapsBarrier_mode2level1 = false;
         for (const auto& barrier_mode2level1 : barriers_mode2level1) {
@@ -882,15 +759,12 @@ void spawnFood_mode2level1() {
             int by_mode2level1 = barrier_mode2level1.second;
             int barrierThickness_mode2level1 = 30;
 
-
-
             if (foodX_mode2level1 >= bx_mode2level1 - bufferzone_mode2level1 && foodX_mode2level1 <= bx_mode2level1 + barrierThickness_mode2level1 + bufferzone_mode2level1 &&
                 foodY_mode2level1 >= by_mode2level1 && foodY_mode2level1 <= by_mode2level1 + barrierThickness_mode2level1) {
                 overlapsBarrier_mode2level1 = true;
                 break;
             }
         }
-
 
         if (!overlapsBarrier_mode2level1) {
             validPosition_mode2level1 = true;
@@ -916,7 +790,6 @@ void updateSnake_mode2level1(int& x_mode2level1, int& y_mode2level1, int W_mode2
         snakeBody_mode2level1[i][0] = snakeBody_mode2level1[i - 1][0];
         snakeBody_mode2level1[i][1] = snakeBody_mode2level1[i - 1][1];
     }
-
 
     if (W_mode2level1 == 1)
         snakeBody_mode2level1[0][0] -= 5;
@@ -947,11 +820,9 @@ bool checkSelfCollision_mode2level1() {
 }
 
 void spawnFixedBarriers_mode2level1() {
-
     int barrierHeight_mode2level1 = 170;
     int leftMargin_mode2level1 = 490;
     int spacing_mode2level1 = 60;
-
 
     barriers_mode2level1.push_back({ leftMargin_mode2level1, 160 });
     barriers_mode2level1.push_back({ leftMargin_mode2level1, 160 + barrierHeight_mode2level1 });
@@ -959,7 +830,6 @@ void spawnFixedBarriers_mode2level1() {
     barriers_mode2level1.push_back({ leftMargin_mode2level1 + spacing_mode2level1 + 30, 160 });
     barriers_mode2level1.push_back({ leftMargin_mode2level1 + spacing_mode2level1 + 30, 160 + barrierHeight_mode2level1 });
 }
-
 
 void renderBarriers_mode2level1() {
     for (size_t i = 0; i < barriers_mode2level1.size(); i += 2) {
@@ -979,13 +849,11 @@ bool checkBarrierCollision_mode2level1(int x_mode2level1, int y_mode2level1) {
         int x2_mode2level1 = barriers_mode2level1[i + 1].first;
         int y2_mode2level1 = barriers_mode2level1[i + 1].second;
 
-
         if (x1_mode2level1 == x2_mode2level1) {
             if (x_mode2level1 >= x1_mode2level1 - 3 && x_mode2level1 <= x1_mode2level1 + 3 && y_mode2level1 >= y1_mode2level1 && y_mode2level1 <= y2_mode2level1) {
                 return true;
             }
         }
-
         else if (y1_mode2level1 == y2_mode2level1) {
             if (y_mode2level1 >= y1_mode2level1 - 3 && y_mode2level1 <= y1_mode2level1 + 3 && x_mode2level1 >= x1_mode2level1 && x_mode2level1 <= x2_mode2level1) {
                 return true;
@@ -995,9 +863,7 @@ bool checkBarrierCollision_mode2level1(int x_mode2level1, int y_mode2level1) {
     return false;
 }
 
-
-
-
+// Global variables for Mode 2 Level 2
 const int GRID_SIZE_mode2level2 = 10;
 int foodX_mode2level2 = -1, foodY_mode2level2 = -1;
 vector<pair<int, int>> barriers_mode2level2;
@@ -1012,10 +878,8 @@ void spawnFood_mode2level2() {
     int bufferzone_mode2level2 = 70;
 
     while (!validPosition_mode2level2) {
-
         foodX_mode2level2 = 410 + (rand() % ((750 - 410 - 10) / GRID_SIZE_mode2level2)) * GRID_SIZE_mode2level2;
         foodY_mode2level2 = 125 + (rand() % ((360 - 125 - 10) / GRID_SIZE_mode2level2)) * GRID_SIZE_mode2level2;
-
 
         bool overlapsBarrier_mode2level2 = false;
         for (const auto& barrier_mode2level2 : barriers_mode2level2) {
@@ -1023,14 +887,12 @@ void spawnFood_mode2level2() {
             int by_mode2level2 = barrier_mode2level2.second;
             int barrierThickness_mode2level2 = 30;
 
-
             if (foodX_mode2level2 >= bx_mode2level2 - bufferzone_mode2level2 && foodX_mode2level2 <= bx_mode2level2 + barrierThickness_mode2level2 + bufferzone_mode2level2 &&
                 foodY_mode2level2 >= by_mode2level2 && foodY_mode2level2 <= by_mode2level2 + barrierThickness_mode2level2) {
                 overlapsBarrier_mode2level2 = true;
                 break;
             }
         }
-
 
         if (!overlapsBarrier_mode2level2) {
             validPosition_mode2level2 = true;
@@ -1056,7 +918,6 @@ void updateSnake_mode2level2(int& x_mode2level2, int& y_mode2level2, int W_mode2
         snakeBody_mode2level2[i][0] = snakeBody_mode2level2[i - 1][0];
         snakeBody_mode2level2[i][1] = snakeBody_mode2level2[i - 1][1];
     }
-
 
     if (W_mode2level2 == 1)
         snakeBody_mode2level2[0][0] -= 5;
@@ -1087,11 +948,9 @@ bool checkSelfCollision_mode2level2() {
 }
 
 void spawnFixedBarriers_mode2level2() {
-
     int barrierHeight_mode2level2 = 170;
     int leftMargin_mode2level2 = 490;
     int spacing_mode2level2 = 60;
-
 
     barriers_mode2level2.push_back({ leftMargin_mode2level2, 160 });
     barriers_mode2level2.push_back({ leftMargin_mode2level2, 160 + barrierHeight_mode2level2 });
@@ -1122,13 +981,11 @@ bool checkBarrierCollision_mode2level2(int x_mode2level2, int y_mode2level2) {
         int x2_mode2level2 = barriers_mode2level2[i + 1].first;
         int y2_mode2level2 = barriers_mode2level2[i + 1].second;
 
-
         if (x1_mode2level2 == x2_mode2level2) {
             if (x_mode2level2 >= x1_mode2level2 - 3 && x_mode2level2 <= x1_mode2level2 + 3 && y_mode2level2 >= y1_mode2level2 && y_mode2level2 <= y2_mode2level2) {
                 return true;
             }
         }
-
         else if (y1_mode2level2 == y2_mode2level2) {
             if (y_mode2level2 >= y1_mode2level2 - 3 && y_mode2level2 <= y1_mode2level2 + 3 && x_mode2level2 >= x1_mode2level2 && x_mode2level2 <= x2_mode2level2) {
                 return true;
@@ -1137,9 +994,8 @@ bool checkBarrierCollision_mode2level2(int x_mode2level2, int y_mode2level2) {
     }
     return false;
 }
+
 void Restartlevel(int level) {
-
-
     if (level == 0) {
         myRect(395, 115, 755, 365, 123, 158, 2);
 
@@ -1155,7 +1011,7 @@ void Restartlevel(int level) {
         snakeBody_mode1[0][0] = x_mode1;
         snakeBody_mode1[0][1] = y_mode1;
         system("cls");
-        cout << "Restarted Infinte Mode ! Good luck!\n";
+        cout << "Restarted Infinite Mode! Good luck!\n";
     }
     else if (level == 1) {
         myRect(395, 115, 755, 365, 123, 158, 2);
@@ -1172,6 +1028,7 @@ void Restartlevel(int level) {
         snakeBody_mode2level1[0][0] = x_mode2level1;
         snakeBody_mode2level1[0][1] = y_mode2level1;
 
+        barriers_mode2level1.clear();
         spawnFixedBarriers_mode2level1();
         system("cls");
         cout << "Restarting Mode 2 Level 1! Good luck!\n";
@@ -1191,6 +1048,7 @@ void Restartlevel(int level) {
         snakeBody_mode2level2[0][0] = x_mode2level2;
         snakeBody_mode2level2[0][1] = y_mode2level2;
 
+        barriers_mode2level2.clear();
         spawnFixedBarriers_mode2level2();
         system("cls");
         cout << "Restarting Level 2! Good luck!\n";
@@ -1210,14 +1068,13 @@ void Restartlevel(int level) {
         snakeBody_mode2level3[0][0] = x_mode2level3;
         snakeBody_mode2level3[0][1] = y_mode2level3;
 
+        barriers_mode2level3.clear();
         spawnFixedBarriers_mode2level3();
-
-        renderBarriers_mode2level3();
         system("cls");
         cout << "Restarting Level 3! Good luck!\n";
     }
     else if (level == 4) {
-        myRect(395, 115, 755, 365, 123, 158, 2);
+        myRect(400, 120, 1290, 735, 123, 158, 2);
         int x_mode2levelInfinite = 475;
         int y_mode2levelInfinite = 240;
         int W_mode2levelInfinite = 0;
@@ -1227,46 +1084,36 @@ void Restartlevel(int level) {
         foodY_mode2levelInfinite = -1;
         gamePaused_mode2levelInfinite = true;
         gameOver_mode2levelInfinite = false;
+        level_mode2levelInfinite = 1;
 
         snakeBody_mode2levelInfinite[0][0] = x_mode2levelInfinite;
         snakeBody_mode2levelInfinite[0][1] = y_mode2levelInfinite;
-
 
         barriers_mode2levelInfinite.clear();
         spawnBarrier_mode2levelInfinite();
         spawnBarrier_mode2levelInfinite();
 
-
-        foodX_mode2levelInfinite = -1;
-        foodY_mode2levelInfinite = -1;
-
         system("cls");
         cout << "Restarting Infinite Mode! Good luck!\n";
     }
     else if (level == 5) {
+        myRect(395, 115, 755, 365, 123, 158, 2);
         int x_mode3 = 475, y_mode3 = 240;
-        int w_mode3, W_mode3 = 0;
+        int W_mode3 = 0;
         int score_mode3 = 0;
-        int snakeSpeed_mode3;
-
-
-        cout << "Enter the snake speed (e.g., 35 for medium, lower for faster, higher for slower): ";
-        cin >> snakeSpeed_mode3;
+        snakeLength_mode3 = 1;
+        foodX_mode3 = -1;
+        foodY_mode3 = -1;
 
         snakeBody_mode3[0][0] = x_mode3;
         snakeBody_mode3[0][1] = y_mode3;
 
+        barriers_mode3.clear();
         customSpawnBarrier_mode3();
 
-
-        score_mode3 = 0;
-        snakeLength_mode3 = 1;
-
         system("cls");
-        cout << "Restarting Mode 3 with Custom Speed! Good luck!\n";
+        cout << "Restarting Mode 3 with Custom Barriers! Good luck!\n";
     }
-
-
 }
 
 int readHighscore(int mode) {
@@ -1282,7 +1129,6 @@ int readHighscore(int mode) {
     return highscore;
 }
 
-
 void writeHighscore(int mode, int newHighscore) {
     string filename = "highscore_mode" + to_string(mode) + ".txt";
     ofstream outFile(filename);
@@ -1297,11 +1143,11 @@ void checkAndUpdateHighscore(int mode, int currentScore) {
     int highscore = readHighscore(mode);
 
     if (currentScore > highscore) {
-        cout << "New highscore : " << currentScore << "!" << endl;
+        cout << "New highscore: " << currentScore << "!" << endl;
         writeHighscore(mode, currentScore);
     }
     else {
-        cout << "Current highscore : " << highscore << endl;
+        cout << "Current highscore: " << highscore << endl;
     }
 }
 
@@ -1310,21 +1156,16 @@ int main() {
     int whichKey = 0;
     bool running = true;
 
-
     int selectedColor = 0;
     int selectedMode = 0;
-
 
     int selectedColorRGB[3] = { 0, 0, 0 };
 
     myRectspecific(3, 150, 300, 400, 0, 0, 0);
 
-
     displayMenu();
 
-
     while (true) {
-
         if (isCursorKeyPressed(whichKey)) {
             if (whichKey == 5) {
                 myRectspecific(3, 150, 300, 400, 0, 0, 0);
@@ -1334,7 +1175,7 @@ int main() {
         }
     }
 
-
+    // Color selection
     while (running) {
         myRectspecific(3, 150, 300, 400, 0, 0, 0);
         gotoxy(8, 10);
@@ -1349,7 +1190,6 @@ int main() {
         drawSnake(selectedColor, 20, 14);
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-
         if (isCursorKeyPressed(whichKey)) {
             if (whichKey == 2) {
                 selectedColor = (selectedColor + 1) % 6;
@@ -1358,7 +1198,6 @@ int main() {
                 selectedColor = (selectedColor - 1 + 6) % 6;
             }
             else if (whichKey == 5) {
-
                 int colors[][3] = {
                     {255, 0, 0},
                     {0, 0, 255},
@@ -1378,11 +1217,10 @@ int main() {
     }
     clearConsole();
 
-
+    // Mode selection
     while (running) {
         myRectspecific(3, 150, 300, 400, 0, 0, 0);
         displayModes(selectedMode);
-
 
         if (isCursorKeyPressed(whichKey)) {
             if (whichKey == 2) {
@@ -1399,18 +1237,15 @@ int main() {
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-
     clearConsole();
 
-
+    // Level selection for Levels Mode
     if (selectedMode == 1) {
         int levelIndex = 0;
 
         while (running) {
-
             myRectspecific(3, 150, 300, 400, 0, 0, 0);
             displayLevels(levelIndex);
-
 
             if (isCursorKeyPressed(whichKey)) {
                 if (whichKey == 2) {
@@ -1426,17 +1261,14 @@ int main() {
                 }
             }
 
-
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
-
 
         clearConsole();
     }
 
-
-    if (selectedMode == 0)
-    {
+    // Mode 0: Endless Mode
+    if (selectedMode == 0) {
         srand(static_cast<unsigned>(time(0)));
 
         int x_mode1 = 475, y_mode1 = 240;
@@ -1446,12 +1278,10 @@ int main() {
         snakeBody_mode1[0][0] = x_mode1;
         snakeBody_mode1[0][1] = y_mode1;
 
-
-        cout << "Infinte Mode!" << endl;
+        cout << "Infinite Mode!" << endl;
         checkAndUpdateHighscore(0, score_mode1);
 
         while (true) {
-
             myRect(395, 115, 755, 365, 123, 158, 2);
             myRect(400, 120, 750, 360, 154, 197, 3);
 
@@ -1459,18 +1289,14 @@ int main() {
                 spawnFoodmode1();
             }
 
-
             myEllipse(foodX_mode1, foodY_mode1, foodX_mode1 + 11, foodY_mode1 + 11, 0, 0, 0);
             myEllipse(foodX_mode1, foodY_mode1, foodX_mode1 + 9, foodY_mode1 + 9, 255, 0, 0);
-
 
             if (isCursorKeyPressed(w_mode1)) {
                 W_mode1 = w_mode1;
             }
 
-
             updateSnakemode1(x_mode1, y_mode1, W_mode1);
-
 
             if (checkFoodCollisionmode1(x_mode1, y_mode1)) {
                 score_mode1++;
@@ -1480,7 +1306,6 @@ int main() {
             }
 
             renderSnakemode1(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
-
 
             if (checkSelfCollisionmode1()) {
                 system("cls");
@@ -1500,6 +1325,12 @@ int main() {
                 if (choice == 1) {
                     Restartlevel(0);
                     score_mode1 = 0;
+                    x_mode1 = 475;
+                    y_mode1 = 240;
+                    W_mode1 = 0;
+                    snakeLength_mode1 = 1;
+                    snakeBody_mode1[0][0] = x_mode1;
+                    snakeBody_mode1[0][1] = y_mode1;
                     checkAndUpdateHighscore(0, score_mode1);
                     continue;
                 }
@@ -1511,119 +1342,186 @@ int main() {
             Sleep(25);
         }
     }
-    if (selectedLevel == 1)
 
-    {
+    // Mode 1: Levels Mode
+    if (selectedMode == 1) {
+        // Level 1
+        if (selectedLevel == 0) {
+            srand(static_cast<unsigned>(time(0)));
 
-        srand(static_cast<unsigned>(time(0)));
+            int x_mode2level1 = 475, y_mode2level1 = 240;
+            int W_mode2level1 = 0;
 
-        int x_mode2level2 = 475, y_mode2level2 = 240;
-        int W_mode2level2 = 0;
+            snakeBody_mode2level1[0][0] = x_mode2level1;
+            snakeBody_mode2level1[0][1] = y_mode2level1;
 
-        snakeBody_mode2level2[0][0] = x_mode2level2;
-        snakeBody_mode2level2[0][1] = y_mode2level2;
+            spawnFixedBarriers_mode2level1();
 
-        spawnFixedBarriers_mode2level2();
+            cout << "Level 1!" << endl;
+            checkAndUpdateHighscore(3, score_mode2level1);
 
-        cout << "Level 2!" << endl;
-        checkAndUpdateHighscore(1, score_mode2level2);
+            while (!gameOver_mode2level1) {
+                myRect(395, 115, 755, 365, 123, 158, 2);
+                myRect(400, 120, 750, 360, 154, 197, 3);
 
+                renderBarriers_mode2level1();
 
-        while (!gameOver_mode2level2) {
-
-
-
-            myRect(395, 115, 755, 365, 123, 158, 2);
-            myRect(400, 120, 750, 360, 154, 197, 3);
-
-            renderBarriers_mode2level2();
-
-            if (foodX_mode2level2 == -1 && foodY_mode2level2 == -1) {
-                spawnFood_mode2level2();
-            }
-            myEllipse(foodX_mode2level2, foodY_mode2level2, foodX_mode2level2 + 11, foodY_mode2level2 + 11, 0, 0, 0);
-            myEllipse(foodX_mode2level2, foodY_mode2level2, foodX_mode2level2 + 9, foodY_mode2level2 + 9, 255, 0, 0);
-
-            renderSnake_mode2level2(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
-
-
-            if (isCursorKeyPressed(W_mode2level2)) {
-                gamePaused_mode2level2 = false;
-            }
-
-
-            if (!gamePaused_mode2level2) {
-                updateSnake_mode2level2(x_mode2level2, y_mode2level2, W_mode2level2);
-
-
-                if (checkFoodCollision_mode2level2(x_mode2level2, y_mode2level2)) {
-                    score_mode2level2++;
-                    cout << "\rScore: " << score_mode2level2 << " ";
-                    snakeLength_mode2level2++;
-                    spawnFood_mode2level2();
+                if (foodX_mode2level1 == -1 && foodY_mode2level1 == -1) {
+                    spawnFood_mode2level1();
                 }
-            }
+                myEllipse(foodX_mode2level1, foodY_mode2level1, foodX_mode2level1 + 11, foodY_mode2level1 + 11, 0, 0, 0);
+                myEllipse(foodX_mode2level1, foodY_mode2level1, foodX_mode2level1 + 9, foodY_mode2level1 + 9, 255, 0, 0);
 
+                renderSnake_mode2level1(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
 
-            if (checkWallCollision_mode2level2(x_mode2level2, y_mode2level2) || checkSelfCollision_mode2level2() || checkBarrierCollision_mode2level2(x_mode2level2, y_mode2level2)) {
-                system("cls");
-                cout << "\nCollision detected! Game Over!" << endl;
-                checkAndUpdateHighscore(1, score_mode2level2);
+                if (isCursorKeyPressed(W_mode2level1)) {
+                    gamePaused_mode2level1 = false;
+                }
 
+                if (!gamePaused_mode2level1) {
+                    updateSnake_mode2level1(x_mode2level1, y_mode2level1, W_mode2level1);
 
-                cout << " Options\n";
-                cout << " 1. Restart Level\n";
-                cout << " 2. Exit\n";
-                cout << " Select an option... : ";
-                int choice;
-                do {
-                    cin >> choice;
-                    if (choice != 1 && choice != 2) {
-                        cout << "Please select one of the available options...\n";
+                    if (checkFoodCollision_mode2level1(x_mode2level1, y_mode2level1)) {
+                        score_mode2level1++;
+                        cout << "\rScore: " << score_mode2level1 << " ";
+                        snakeLength_mode2level1++;
+                        spawnFood_mode2level1();
                     }
-                } while (choice != 1 && choice != 2);
-                if (choice == 1) {
-                    Restartlevel(2);
-                    score_mode2level2 = 0;
-                    checkAndUpdateHighscore(1, score_mode2level2);
-                    continue;
+                }
 
+                if (checkWallCollision_mode2level1(x_mode2level1, y_mode2level1) || checkSelfCollision_mode2level1() || checkBarrierCollision_mode2level1(x_mode2level1, y_mode2level1)) {
+                    system("cls");
+                    cout << "\nCollision detected! Game Over!" << endl;
+                    checkAndUpdateHighscore(3, score_mode2level1);
+                    cout << " Options\n";
+                    cout << " 1. Restart Level\n";
+                    cout << " 2. Exit\n";
+                    cout << " Select an option... : ";
+                    int choice;
+                    do {
+                        cin >> choice;
+                        if (choice != 1 && choice != 2) {
+                            cout << "Please select one of the available options...\n";
+                        }
+                    } while (choice != 1 && choice != 2);
+                    if (choice == 1) {
+                        Restartlevel(1);
+                        x_mode2level1 = 475;
+                        y_mode2level1 = 240;
+                        W_mode2level1 = 0;
+                        snakeBody_mode2level1[0][0] = x_mode2level1;
+                        snakeBody_mode2level1[0][1] = y_mode2level1;
+                        checkAndUpdateHighscore(3, score_mode2level1);
+                        continue;
+                    }
+                    else {
+                        exit(0);
+                    }
                 }
-                else {
-                    exit(0);
-                }
+
+                Sleep(35);
             }
-
-
-            Sleep(35);
         }
 
+        // Level 2
+        if (selectedLevel == 1) {
+            srand(static_cast<unsigned>(time(0)));
 
+            int x_mode2level2 = 475, y_mode2level2 = 240;
+            int W_mode2level2 = 0;
 
-    }
+            snakeBody_mode2level2[0][0] = x_mode2level2;
+            snakeBody_mode2level2[0][1] = y_mode2level2;
 
-    if (selectedLevel == 2) {
-        {
+            spawnFixedBarriers_mode2level2();
 
+            cout << "Level 2!" << endl;
+            checkAndUpdateHighscore(1, score_mode2level2);
+
+            while (!gameOver_mode2level2) {
+                myRect(395, 115, 755, 365, 123, 158, 2);
+                myRect(400, 120, 750, 360, 154, 197, 3);
+
+                renderBarriers_mode2level2();
+
+                if (foodX_mode2level2 == -1 && foodY_mode2level2 == -1) {
+                    spawnFood_mode2level2();
+                }
+                myEllipse(foodX_mode2level2, foodY_mode2level2, foodX_mode2level2 + 11, foodY_mode2level2 + 11, 0, 0, 0);
+                myEllipse(foodX_mode2level2, foodY_mode2level2, foodX_mode2level2 + 9, foodY_mode2level2 + 9, 255, 0, 0);
+
+                renderSnake_mode2level2(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
+
+                if (isCursorKeyPressed(W_mode2level2)) {
+                    gamePaused_mode2level2 = false;
+                }
+
+                if (!gamePaused_mode2level2) {
+                    updateSnake_mode2level2(x_mode2level2, y_mode2level2, W_mode2level2);
+
+                    if (checkFoodCollision_mode2level2(x_mode2level2, y_mode2level2)) {
+                        score_mode2level2++;
+                        cout << "\rScore: " << score_mode2level2 << " ";
+                        snakeLength_mode2level2++;
+                        spawnFood_mode2level2();
+                    }
+                }
+
+                if (checkWallCollision_mode2level2(x_mode2level2, y_mode2level2) || checkSelfCollision_mode2level2() || checkBarrierCollision_mode2level2(x_mode2level2, y_mode2level2)) {
+                    system("cls");
+                    cout << "\nCollision detected! Game Over!" << endl;
+                    checkAndUpdateHighscore(1, score_mode2level2);
+
+                    cout << " Options\n";
+                    cout << " 1. Restart Level\n";
+                    cout << " 2. Exit\n";
+                    cout << " Select an option... : ";
+                    int choice;
+                    do {
+                        cin >> choice;
+                        if (choice != 1 && choice != 2) {
+                            cout << "Please select one of the available options...\n";
+                        }
+                    } while (choice != 1 && choice != 2);
+                    if (choice == 1) {
+                        Restartlevel(2);
+                        x_mode2level2 = 475;
+                        y_mode2level2 = 240;
+                        W_mode2level2 = 0;
+                        snakeBody_mode2level2[0][0] = x_mode2level2;
+                        snakeBody_mode2level2[0][1] = y_mode2level2;
+                        checkAndUpdateHighscore(1, score_mode2level2);
+                        continue;
+                    }
+                    else {
+                        exit(0);
+                    }
+                }
+
+                Sleep(35);
+            }
+        }
+
+        // Level 3
+        if (selectedLevel == 2) {
             srand(static_cast<unsigned>(time(0)));
 
             int x_mode2level3 = 475, y_mode2level3 = 260;
             int W_mode2level3 = 0;
 
-
-            snakeBody_mode1[0][0] = x_mode2level3;
-            snakeBody_mode1[0][1] = y_mode2level3;
+            snakeBody_mode2level3[0][0] = x_mode2level3;
+            snakeBody_mode2level3[0][1] = y_mode2level3;
 
             spawnFixedBarriers_mode2level3();
 
             cout << "Level 3!" << endl;
             checkAndUpdateHighscore(2, score_mode2level3);
+
             while (!gameOver_mode2level3) {
                 myRect(395, 115, 755, 365, 123, 158, 2);
                 myRect(400, 120, 750, 360, 154, 197, 3);
 
                 renderBarriers_mode2level3();
-
 
                 if (foodX_mode2level3 == -1 && foodY_mode2level3 == -1) {
                     spawnFood_mode2level3();
@@ -1633,15 +1531,12 @@ int main() {
 
                 renderSnake_mode2level3(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
 
-
                 if (isCursorKeyPressed(W_mode2level3)) {
                     gamePaused_mode2level3 = false;
                 }
 
-
                 if (!gamePaused_mode2level3) {
                     updateSnake_mode2level3(x_mode2level3, y_mode2level3, W_mode2level3);
-
 
                     if (checkFoodCollision_mode2level3(x_mode2level3, y_mode2level3)) {
                         score_mode2level3++;
@@ -1650,7 +1545,6 @@ int main() {
                         spawnFood_mode2level3();
                     }
                 }
-
 
                 if (checkWallCollision_mode2level3(x_mode2level3, y_mode2level3) || checkSelfCollision_mode2level3() || checkBarrierCollision_mode2level3(x_mode2level3, y_mode2level3)) {
                     system("cls");
@@ -1669,7 +1563,11 @@ int main() {
                     } while (choice != 1 && choice != 2);
                     if (choice == 1) {
                         Restartlevel(3);
-                        score_mode2level3 = 0;
+                        x_mode2level3 = 475;
+                        y_mode2level3 = 260;
+                        W_mode2level3 = 0;
+                        snakeBody_mode2level3[0][0] = x_mode2level3;
+                        snakeBody_mode2level3[0][1] = y_mode2level3;
                         checkAndUpdateHighscore(2, score_mode2level3);
                         continue;
                     }
@@ -1678,91 +1576,12 @@ int main() {
                     }
                 }
 
-
                 Sleep(30);
             }
         }
-    }
-    if (selectedLevel == 0) {
-        srand(static_cast<unsigned>(time(0)));
 
-        int x_mode2level1 = 475, y_mode2level1 = 240;
-        int W_mode2level1 = 0;
-
-        snakeBody_mode2level1[0][0] = x_mode2level1;
-        snakeBody_mode2level1[0][1] = y_mode2level1;
-
-        spawnFixedBarriers_mode2level1();
-
-        cout << "Level 1!" << endl;
-        checkAndUpdateHighscore(3, score_mode2level1);
-
-        while (!gameOver_mode2level1) {
-            myRect(395, 115, 755, 365, 123, 158, 2);
-            myRect(400, 120, 750, 360, 154, 197, 3);
-
-            renderBarriers_mode2level1();
-
-            if (foodX_mode2level1 == -1 && foodY_mode2level1 == -1) {
-                spawnFood_mode2level1();
-            }
-            myEllipse(foodX_mode2level1, foodY_mode2level1, foodX_mode2level1 + 11, foodY_mode2level1 + 11, 0, 0, 0);
-            myEllipse(foodX_mode2level1, foodY_mode2level1, foodX_mode2level1 + 9, foodY_mode2level1 + 9, 255, 0, 0);
-
-            renderSnake_mode2level1(selectedColorRGB[0], selectedColorRGB[1], selectedColorRGB[2]);
-
-
-            if (isCursorKeyPressed(W_mode2level1)) {
-                gamePaused_mode2level1 = false;
-            }
-
-
-            if (!gamePaused_mode2level1) {
-                updateSnake_mode2level1(x_mode2level1, y_mode2level1, W_mode2level1);
-
-
-                if (checkFoodCollision_mode2level1(x_mode2level1, y_mode2level1)) {
-                    score_mode2level1++;
-                    cout << "\rScore: " << score_mode2level1 << " ";
-                    snakeLength_mode2level1++;
-                    spawnFood_mode2level1();
-                }
-            }
-
-
-            if (checkWallCollision_mode2level1(x_mode2level1, y_mode2level1) || checkSelfCollision_mode2level1() || checkBarrierCollision_mode2level1(x_mode2level1, y_mode2level1)) {
-                system("cls");
-                cout << "\nCollision detected! Game Over!" << endl;
-                checkAndUpdateHighscore(3, score_mode2level1);
-                cout << " Options\n";
-                cout << " 1. Restart Level\n";
-                cout << " 2. Exit\n";
-                cout << " Select an option... : ";
-                int choice;
-                do {
-                    cin >> choice;
-                    if (choice != 1 && choice != 2) {
-                        cout << "Please select one of the available options...\n";
-                    }
-                } while (choice != 1 && choice != 2);
-                if (choice == 1) {
-                    Restartlevel(1);
-                    score_mode2level1 = 0;
-                    checkAndUpdateHighscore(3, score_mode2level1);
-                    continue;
-                }
-                else {
-                    exit(0);
-                }
-            }
-
-
-            Sleep(35);
-        }
-    }
-
-    if (selectedLevel == 3) {
-        {
+        // Infinite Level
+        if (selectedLevel == 3) {
             srand(static_cast<unsigned>(time(0)));
 
             int x_mode2levelInfinite = 475, y_mode2levelInfinite = 240;
@@ -1773,15 +1592,13 @@ int main() {
 
             spawnBarrier_mode2levelInfinite();
             spawnBarrier_mode2levelInfinite();
-            cout << "Level 1!" << endl;
+            cout << "Infinite Level!" << endl;
             checkAndUpdateHighscore(4, score_mode2levelInfinite);
 
             double gameSpeed_mode2levelInfinite = 25.0;
 
             while (!gameOver_mode2levelInfinite) {
                 myRect(395, 115, 1295, 740, 123, 158, 2);
-
-
                 myRect(400, 120, 1290, 735, 154, 197, 3);
 
                 renderBarriers_mode2levelInfinite();
@@ -1807,7 +1624,6 @@ int main() {
                         cout << "\rScore: " << score_mode2levelInfinite << " ";
                         snakeLength_mode2levelInfinite++;
                         spawnFood_mode2levelInfinite();
-
 
                         if (gameSpeed_mode2levelInfinite > 1) {
                             gameSpeed_mode2levelInfinite -= 0.1;
@@ -1837,10 +1653,13 @@ int main() {
                         }
                     } while (choice != 1 && choice != 2);
                     if (choice == 1) {
-                        level_mode2levelInfinite = 1;
                         Restartlevel(4);
-                        score_mode2levelInfinite = 0;
+                        x_mode2levelInfinite = 475;
+                        y_mode2levelInfinite = 240;
+                        W_mode2levelInfinite = 0;
                         gameSpeed_mode2levelInfinite = 25.0;
+                        snakeBody_mode2levelInfinite[0][0] = x_mode2levelInfinite;
+                        snakeBody_mode2levelInfinite[0][1] = y_mode2levelInfinite;
                         checkAndUpdateHighscore(4, score_mode2levelInfinite);
                         continue;
                     }
@@ -1849,14 +1668,13 @@ int main() {
                     }
                 }
 
-
                 Sleep(static_cast<int>(gameSpeed_mode2levelInfinite));
             }
         }
     }
 
+    // Mode 2: Custom Mode
     if (selectedMode == 2) {
-
         srand(static_cast<unsigned>(time(0)));
 
         int x_mode3 = 475, y_mode3 = 240;
@@ -1871,8 +1689,6 @@ int main() {
 
         snakeBody_mode3[0][0] = x_mode3;
         snakeBody_mode3[0][1] = y_mode3;
-
-
 
         customSpawnBarrier_mode3();
         checkAndUpdateHighscore(5, score_mode3);
@@ -1922,7 +1738,13 @@ int main() {
                 } while (choice != 1 && choice != 2);
                 if (choice == 1) {
                     Restartlevel(5);
+                    x_mode3 = 475;
+                    y_mode3 = 240;
+                    W_mode3 = 0;
                     score_mode3 = 0;
+                    snakeLength_mode3 = 1;
+                    snakeBody_mode3[0][0] = x_mode3;
+                    snakeBody_mode3[0][1] = y_mode3;
                     checkAndUpdateHighscore(5, score_mode3);
                     continue;
                 }
@@ -1932,13 +1754,8 @@ int main() {
             }
             Sleep(snakeSpeed_mode3);
         }
-
-
-
     }
 
     system("pause");
     return 0;
-
-
 }
