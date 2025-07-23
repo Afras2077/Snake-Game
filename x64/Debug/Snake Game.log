@@ -1,0 +1,34 @@
+﻿  main.cpp
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(110,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(112,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(114,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(116,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(118,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(124,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(130,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(136,27): warning C4244: '=': conversion from 'SHORT' to 'char', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(179,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\help.h(864,9): warning C4101: 'key': unreferenced local variable
+  (compiling source file 'main.cpp')
+  
+C:\Users\Afras\source\repos\Snake Game\Snake Game\main.cpp(338,36): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Afras\source\repos\Snake Game\Snake Game\main.cpp(1248,13): warning C4101: 'w_mode3': unreferenced local variable
+  Snake Game.vcxproj -> C:\Users\Afras\source\repos\Snake Game\x64\Debug\Snake Game.exe
